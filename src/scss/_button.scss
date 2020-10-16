@@ -1,0 +1,15 @@
+$button-bg-color: #2677ff;
+$button-bg-hover-color: #3683ff;
+$button-font-color: white;
+
+.button {
+  background-color: $button-bg-color;
+  color: $button-font-color;
+  font-weight: bold;
+  border-radius: 3px;
+  font-family: "Open Sans";
+  &:hover {
+    color: white;
+    background-color: $button-bg-hover-color;
+  }
+}

@@ -1,0 +1,26 @@
+$logo-font: "Open Sans", sans-serif;
+$logo-color: #212d38;
+
+.navbar {
+  border-bottom: 2px solid #e9ecf3;
+
+  #logo {
+    font-family: $logo-font;
+    color: $logo-color;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+  }
+
+  .navbar-buttons {
+    .navbar-button-text {
+      font-size: 16px;
+
+      &:hover {
+        background-color: #dedede;
+        border-radius: 2px;
+      }
+    }
+  }
+}

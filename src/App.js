@@ -1,10 +1,13 @@
-import React from 'react';
-import './css/App.css';
+import React, { useState } from "react";
+import "./scss/main.scss";
+import NavBar from "./components/navbar/NavBar";
 
 function App() {
+  const [contributors, setContributors] = useState([]);
+
   return (
-    <div className="App">
-      
+    <div id="main-page">
+      <NavBar />
     </div>
   );
 }
