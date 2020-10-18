@@ -7,7 +7,16 @@ const TextEditor = () => {
   const [value, setValue] = useState([
     {
       type: "paragraph",
-      children: [{ text: "" }],
+      children: [{ text: "Welcome to Jotpad!" }],
+    },
+    {
+      type: "paragraph",
+      children: [
+        {
+          text:
+            "This project is created using sockets, so go ahead and invite a friend (or open this page in another tab) to collaborate on the document together.",
+        },
+      ],
     },
   ]);
 
