@@ -1,4 +1,4 @@
-## COVID-19 Report
+## Jotpad
 
 ![Jotpad Screenshot](https://user-images.githubusercontent.com/31317867/96648312-032c2400-12e4-11eb-867f-9bd0ed2e295e.png)
 
