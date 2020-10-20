@@ -1,33 +1,78 @@
-import React, { useMemo, useState, useRef } from "react";
-import { createEditor } from "slate";
-import { Slate, Editable, withReact } from "slate-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Editor } from "slate-react";
+import { Value } from "slate";
+import io from "socket.io-client";
+
+const socket = io("http://localhost:4000");
 
 const TextEditor = () => {
-  const editor = useMemo(() => withReact(createEditor()), []);
-  const [value, setValue] = useState([
-    {
-      type: "paragraph",
-      children: [{ text: "Welcome to Jotpad!" }],
-    },
-    {
-      type: "paragraph",
-      children: [
-        {
-          text:
-            "This project is created using sockets, so go ahead and invite a friend (or open this page in another tab) to collaborate on the document together.",
-        },
-      ],
-    },
-  ]);
+  const editor = useRef(null);
+  const id = useRef(`${Date.now()}`);
+  const remote = useRef(false);
+
+  const [value, setValue] = useState(
+    Value.fromJSON({
+      document: {
+        nodes: [
+          {
+            object: "block",
+            type: "paragraph",
+            nodes: [
+              {
+                object: "text",
+                leaves: [
+                  {
+                    text: "A line of text in a paragraph.",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    })
+  );
+
+  useEffect(() => {
+    socket.on("new-remote-operations", ({ editorId, ops }) => {
+      if (id.current !== editorId) {
+        remote.current = true;
+        JSON.parse(ops).forEach((op) => editor.current.applyOperation(op));
+        remote.current = false;
+      }
+    });
+  }, []);
 
   return (
-    <Slate
-      editor={editor}
+    <Editor
+      ref={editor}
       value={value}
-      onChange={(newValue) => setValue(newValue)}
-    >
-      <Editable />
-    </Slate>
+      onChange={(opts) => {
+        setValue(opts.value);
+
+        const ops = opts.operations
+          .filter((o) => {
+            if (o) {
+              return (
+                o.type !== "set_selection" &&
+                o.type !== "set_value" &&
+                (!o.data || !o.data.has("source"))
+              );
+            }
+
+            return false;
+          })
+          .toJS()
+          .map((o) => ({ ...o, data: { source: "one" } }));
+
+        if (ops.length && !remote.current) {
+          socket.emit("new-operations", {
+            editorId: id.current,
+            ops: JSON.stringify(ops),
+          });
+        }
+      }}
+    />
   );
 };
 
