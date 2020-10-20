@@ -9,6 +9,7 @@ Jotpad is a document editor that syncs across multiple browser via sockets.
 * HTML/SASS
 * [Bootstrap](https://getbootstrap.com/)
 * [Socket.io](https://socket.io/)
+* [Slate.js](https://www.slatejs.org/examples/richtext/)
 
 <!-- GETTING STARTED -->
 ## Getting Started
